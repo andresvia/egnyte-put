@@ -7,7 +7,7 @@ Does multipart chunk-uploads of file to egnyte cloud.
 
 How to use:
 
-    egnyte-put localfile https://<egnyte domain>.egnyte.com/Path/To/remotefile
+    egnyte-put -from localfile -to https://<egnyte domain>.egnyte.com/Path/To/remotefile
 
 Help:
 
