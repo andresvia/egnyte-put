@@ -2,12 +2,14 @@ package main
 
 import (
 	"errors"
+	"fmt"
 	"github.com/urfave/cli"
 	"os"
 )
 
 var from string
 var to string
+var egnyte_chunk_size int64 = 104857600
 
 func main() {
 	app := cli.NewApp()
@@ -48,18 +50,18 @@ func action(ctx *cli.Context) (action_err error) {
 		return
 	}
 
-	egnyte_chunk_size := int64(104857600)
 	chunks := (fi.Size() / egnyte_chunk_size) + 1
 	fd.Close()
 
 	for chunk := int64(0); chunk < chunks; chunk++ {
-		go upload_chunk(chunk)
+		upload_chunk(from, to, chunk*egnyte_chunk_size)
 	}
 
 	return
 }
 
-func upload_chunk(chunk int64) {
+func upload_chunk(from, to string, start int64) {
+	fmt.Printf("upload file %s to %s since byte %d until byte %d\n", from, to, start, start+egnyte_chunk_size)
 }
 
 func get_egnyte_token() {
