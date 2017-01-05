@@ -2,14 +2,16 @@ package main
 
 import (
 	"errors"
-	"fmt"
 	"github.com/urfave/cli"
+	// "golang.org/x/oauth2"
 	"os"
 )
 
 var from string
 var to string
-var egnyte_chunk_size int64 = 104857600
+
+//var egnyte_chunk_size int64 = 104857600
+var egnyte_chunk_size int64 = 100
 
 func main() {
 	app := cli.NewApp()
@@ -60,8 +62,25 @@ func action(ctx *cli.Context) (action_err error) {
 	return
 }
 
-func upload_chunk(from, to string, start int64) {
-	fmt.Printf("upload file %s to %s since byte %d until byte %d\n", from, to, start, start+egnyte_chunk_size)
+func upload_chunk(from, to string, start int64) (upload_chunk_err error) {
+
+	var fd *os.File
+
+	if fd, upload_chunk_err = os.Open(from); upload_chunk_err != nil {
+		return
+	} else {
+		defer fd.Close()
+	}
+
+	if _, upload_chunk_err = fd.Seek(start, 0); upload_chunk_err != nil {
+		return
+	}
+
+	upload_to(fd, to)
+	return
+}
+
+func upload_to(fd *os.File, to string) {
 }
 
 func get_egnyte_token() {
