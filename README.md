@@ -1,7 +1,7 @@
 egnyte-put
 ==========
 
-This is a WIP.
+This is a non-working WIP.
 
 [godoc](https://godoc.org/github.com/andresvia/egnyte-put)
 
